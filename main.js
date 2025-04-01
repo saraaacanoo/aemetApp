@@ -5,8 +5,9 @@ require([
     'esri/layers/GraphicsLayer',
     'esri/Graphic',
     'esri/rest/support/Query',
-    'esri/symbols/SimpleMarkerSymbol'
-], (Map, MapView, FeatureLayer, GraphicsLayer, Graphic, Query, SimpleMarkerSymbol) => {
+    'esri/symbols/SimpleMarkerSymbol',
+    'esri/widgets/Search'
+], (Map, MapView, FeatureLayer, GraphicsLayer, Graphic, Query, SimpleMarkerSymbol, Search) => {
 
     const map = new Map({
         basemap: 'dark-gray'
@@ -105,5 +106,22 @@ require([
             capaGrafica.add(grafico);
         });
     });
+    const searchWidget = new Search({
+        view: view,
+        includeDefaultSources: false,
+        sources: [
+            {
+                layer: featureLayer,
+                searchFields: ["nombre", "provincia"],
+                displayField: "nombre",
+                exactMatch: false,
+                outFields: ["nombre", "provincia"],
+                name: "AEMET Datos",
+                placeholder: "Buscar Estaciones..."
+            }
+        ]
+    });
+
+    view.ui.add(searchWidget, {position: "top-left"});
 });
 
